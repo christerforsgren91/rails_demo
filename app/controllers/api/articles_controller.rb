@@ -10,6 +10,13 @@ class Api::ArticlesController < ApplicationController
   end
 
   def create
-  binding.pry
+    article = Article.create(params[:article].permit(:title, :body))
+
+
+    if article.persisted?
+    render json: { message: 'Your article was successfully created' }, status: 201
+    else
+      render json: { message: article.errors.full_messages.to_sentence }, status: 422
+    end
   end
 end
